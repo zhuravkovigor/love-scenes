@@ -254,12 +254,12 @@ LoveScenes.init({
 
 ### Configuration Options
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `scenesPath` | string | `"scenes"` | Directory containing your scene files |
-| `autoLoad` | boolean | `true` | Automatically scan and load scenes on initialization |
-| `enableLayouts` | boolean | `true` | Enable the layout system for wrapping scenes |
-| `debugMode` | boolean | `false` | Enable debug logging to console |
+| Parameter       | Type    | Default    | Description                                          |
+| --------------- | ------- | ---------- | ---------------------------------------------------- |
+| `scenesPath`    | string  | `"scenes"` | Directory containing your scene files                |
+| `autoLoad`      | boolean | `true`     | Automatically scan and load scenes on initialization |
+| `enableLayouts` | boolean | `true`     | Enable the layout system for wrapping scenes         |
+| `debugMode`     | boolean | `false`    | Enable debug logging to console                      |
 
 ## Scene Lifecycle
 
@@ -338,7 +338,7 @@ Initialize the library with optional configuration. **All parameters are optiona
 
 - `config` (table, optional): Configuration options. If omitted, uses default values.
   - `scenesPath` (string, optional): Directory containing scenes (default: "scenes")
-  - `autoLoad` (boolean, optional): Automatically load scenes on init (default: true)  
+  - `autoLoad` (boolean, optional): Automatically load scenes on init (default: true)
   - `enableLayouts` (boolean, optional): Enable layout system (default: true)
   - `debugMode` (boolean, optional): Enable debug logging (default: false)
 
