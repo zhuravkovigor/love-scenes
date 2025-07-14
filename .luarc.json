@@ -1,0 +1,10 @@
+{
+  "runtime.version": "Lua 5.1",
+  "workspace.library": ["/usr/share/love"],
+  "diagnostics.globals": ["love"],
+  "completion.enable": true,
+  "hover.enable": true,
+  "signatureHelp.enable": true,
+  "workspace.checkThirdParty": false,
+  "telemetry.enable": false
+}

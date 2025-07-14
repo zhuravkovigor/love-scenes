@@ -1,0 +1,59 @@
+# Love Scenes .gitignore
+
+# Generated documentation
+docs/
+
+# LuaRocks artifacts
+*.rock
+*.rockspec.bak
+
+# Build artifacts
+build/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Lua compiled files
+*.luac
+
+# LÖVE 2D specific
+conf.lua.bak
+main.lua.bak
+
+# Test coverage
+luacov.*.out
+luacov.report.out
+
+# Package manager
+node_modules/
+.npm/
+
+# Local environment
+.env
+.env.local
+
+# Development artifacts
+*.orig
+*.rej
+.cache/
+
+# Profiling
+*.prof
+
+# Debug files
+debug.log
+*.debug
