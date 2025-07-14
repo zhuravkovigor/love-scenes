@@ -1,6 +1,6 @@
 # Makefile for love-scenes project
 
-.PHONY: test demo lint clean package install help
+.PHONY: test demo lint clean package install upload dev-deps docs typecheck dev ci pre-commit help
 
 # Default target
 all: test
@@ -40,6 +40,17 @@ package: test
 install: package
 	@echo "Installing locally..."
 	@luarocks install --local love-scenes-1.0-1.rockspec
+
+# Upload to LuaRocks (requires API key)
+upload: package
+	@echo "Uploading to LuaRocks..."
+	@if [ -z "$$LUAROCKS_API_KEY" ]; then \
+		echo "Error: LUAROCKS_API_KEY environment variable not set"; \
+		echo "Get your API key from https://luarocks.org/settings/api-keys"; \
+		echo "Then run: export LUAROCKS_API_KEY=your_api_key_here"; \
+		exit 1; \
+	fi
+	@luarocks upload love-scenes-1.0-1.rockspec --api-key=$$LUAROCKS_API_KEY
 
 # Install development dependencies
 dev-deps:
@@ -93,6 +104,7 @@ help:
 	@echo "  clean       - Clean generated files"
 	@echo "  package     - Create LuaRocks package"
 	@echo "  install     - Install locally for development"
+	@echo "  upload      - Upload to LuaRocks (requires LUAROCKS_API_KEY)"
 	@echo "  dev-deps    - Install development dependencies"
 	@echo "  docs        - Generate documentation with LDoc"
 	@echo "  typecheck   - Run type checking"

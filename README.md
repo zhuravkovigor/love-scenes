@@ -12,17 +12,43 @@ File-system based scene routing for LÖVE 2D games inspired by Next.js
 
 ## Installation
 
-### Using LuaRocks (Recommended)
+### LuaRocks (Recommended)
 
 ```bash
 luarocks install love-scenes
 ```
 
+### Git/GitHub
+
+Install directly from GitHub:
+
+```bash
+luarocks install --server=https://luarocks.org/manifests/zhuravkovigor love-scenes
+```
+
+Or clone and install manually:
+
+```bash
+git clone https://github.com/zhuravkovigor/love-scenes.git
+cd love-scenes
+luarocks make love-scenes-1.0-1.rockspec
+```
+
 ### Manual Installation
 
-1. Download the latest release
-2. Copy the library files to your project
+1. Download the latest release from [GitHub Releases](https://github.com/zhuravkovigor/love-scenes/releases)
+2. Extract the files to your project directory
 3. Require the library in your `main.lua`
+
+### Development Installation
+
+Clone the repository and install locally:
+
+```bash
+git clone https://github.com/zhuravkovigor/love-scenes.git
+cd love-scenes
+make install
+```
 
 ## Quick Start
 

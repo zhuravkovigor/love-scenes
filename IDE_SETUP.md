@@ -1,73 +1,76 @@
-# IDE Configuration для Love Scenes
+# IDE Configuration for Love Scenes
 
-Настройки для различных редакторов и IDE для оптимальной работы с Love Scenes.
+Configuration settings for various editors and IDEs for optimal Love Scenes development.
 
 ## 🎯 VS Code
 
-### Расширения
-Установите следующие расширения:
+### Extensions
+
+Install the following extensions:
+
 ```
 - Lua Language Server (sumneko.lua)
 - LÖVE 2D Support (pixelbyte-studios.pixelbyte-love2d)
 - Lua (keyring.Lua)
 ```
 
-### Настройки
-Файл `.vscode/settings.json`:
+### Settings
+
+File `.vscode/settings.json`:
+
 ```json
 {
-    "Lua.runtime.version": "Lua 5.1",
-    "Lua.workspace.library": [
-        "/usr/share/love"
-    ],
-    "Lua.diagnostics.globals": [
-        "love"
-    ],
-    "Lua.completion.enable": true,
-    "Lua.hover.enable": true,
-    "files.associations": {
-        "*.lua": "lua"
-    }
+  "Lua.runtime.version": "Lua 5.1",
+  "Lua.workspace.library": ["/usr/share/love"],
+  "Lua.diagnostics.globals": ["love"],
+  "Lua.completion.enable": true,
+  "Lua.hover.enable": true,
+  "files.associations": {
+    "*.lua": "lua"
+  }
 }
 ```
 
-### Задачи
-Файл `.vscode/tasks.json`:
+### Tasks
+
+File `.vscode/tasks.json`:
+
 ```json
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Run Tests",
-            "type": "shell",
-            "command": "make test",
-            "group": "test",
-            "presentation": {
-                "echo": true,
-                "reveal": "always"
-            }
-        },
-        {
-            "label": "Run Demo",
-            "type": "shell",
-            "command": "make demo",
-            "group": "build"
-        },
-        {
-            "label": "Lint Code",
-            "type": "shell",
-            "command": "make lint",
-            "group": "test"
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "make test",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Run Demo",
+      "type": "shell",
+      "command": "make demo",
+      "group": "build"
+    },
+    {
+      "label": "Lint Code",
+      "type": "shell",
+      "command": "make lint",
+      "group": "test"
+    }
+  ]
 }
 ```
 
 ## 🚀 Neovim
 
-### Конфигурация LSP
+### LSP Configuration
+
 ```lua
--- init.lua для Neovim
+-- init.lua for Neovim
 require'lspconfig'.lua_ls.setup {
   settings = {
     Lua = {
@@ -87,9 +90,10 @@ require'lspconfig'.lua_ls.setup {
 }
 ```
 
-### Плагины
+### Plugins
+
 ```lua
--- С помощью packer.nvim
+-- Using packer.nvim
 use {
   'neovim/nvim-lspconfig',
   'hrsh7th/nvim-cmp',
@@ -99,34 +103,40 @@ use {
 
 ## 📝 Sublime Text
 
-### Пакеты
-Установите через Package Control:
+### Packages
+
+Install via Package Control:
+
 - SublimeLinter
 - SublimeLinter-luacheck
 - Lua Dev
 - LOVE
 
-### Настройки
-Файл `Preferences > Settings`:
+### Settings
+
+File `Preferences > Settings`:
+
 ```json
 {
-    "rulers": [120],
-    "translate_tabs_to_spaces": true,
-    "tab_size": 4
+  "rulers": [120],
+  "translate_tabs_to_spaces": true,
+  "tab_size": 4
 }
 ```
 
 ## 🛠️ Vim
 
-### Плагины
+### Plugins
+
 ```vim
-" В .vimrc
+" In .vimrc
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'dense-analysis/ale'
 ```
 
-### Конфигурация ALE
+### ALE Configuration
+
 ```vim
 let g:ale_linters = {
 \   'lua': ['luacheck'],
@@ -138,9 +148,10 @@ let g:ale_fixers = {
 
 ## 🎨 Emacs
 
-### Конфигурация
+### Configuration
+
 ```elisp
-;; В init.el
+;; In init.el
 (use-package lua-mode
   :ensure t
   :mode "\\.lua\\'")
@@ -156,10 +167,12 @@ let g:ale_fixers = {
   (global-flycheck-mode 1))
 ```
 
-## 🔧 Общие настройки
+## 🔧 General Settings
 
 ### EditorConfig
-Файл `.editorconfig`:
+
+File `.editorconfig`:
+
 ```ini
 root = true
 
@@ -179,43 +192,47 @@ trim_trailing_whitespace = false
 indent_style = tab
 ```
 
-### Git hooks
+### Git Hooks
+
 ```bash
-# Установка pre-commit hook
+# Install pre-commit hook
 echo "#!/bin/bash\nmake pre-commit" > .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
 
-## 🎯 Рекомендуемый workflow
+## 🎯 Recommended Workflow
 
-1. **Настройте IDE** с Lua Language Server
-2. **Установите зависимости**: `make dev-deps`
-3. **Проверьте настройку**: `make ci`
-4. **Начинайте разработку** с автодополнением и проверкой типов
+1. **Set up IDE** with Lua Language Server
+2. **Install dependencies**: `make dev-deps`
+3. **Check setup**: `make ci`
+4. **Start developing** with autocomplete and type checking
 
-## 🐛 Отладка настроек
+## 🐛 Debugging Settings
 
-### Проверка Lua Language Server
+### Check Lua Language Server
+
 ```bash
-# Проверка версии
+# Check version
 lua-language-server --version
 
-# Проверка конфигурации
+# Check configuration
 cat .luarc.json
 ```
 
-### Проверка luacheck
+### Check luacheck
+
 ```bash
-# Тест конфигурации
+# Test configuration
 luacheck --version
 luacheck --config .luacheckrc init.lua
 ```
 
-### Проверка LÖVE 2D
+### Check LÖVE 2D
+
 ```bash
-# Версия LÖVE
+# LÖVE version
 love --version
 
-# Запуск демо
+# Run demo
 make demo
 ```
