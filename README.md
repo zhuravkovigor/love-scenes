@@ -237,7 +237,13 @@ LoveScenes.navigate('/user/123', {tab = "settings"})
 
 ## Configuration
 
+All configuration parameters are optional. Love Scenes works out of the box with sensible defaults:
+
 ```lua
+-- Minimal setup - all parameters are optional
+LoveScenes.init()
+
+-- With custom configuration
 LoveScenes.init({
     scenesPath = "scenes",      -- Directory containing scenes (default: "scenes")
     autoLoad = true,            -- Automatically load scenes on init (default: true)
@@ -245,6 +251,15 @@ LoveScenes.init({
     debugMode = false           -- Enable debug logging (default: false)
 })
 ```
+
+### Configuration Options
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `scenesPath` | string | `"scenes"` | Directory containing your scene files |
+| `autoLoad` | boolean | `true` | Automatically scan and load scenes on initialization |
+| `enableLayouts` | boolean | `true` | Enable the layout system for wrapping scenes |
+| `debugMode` | boolean | `false` | Enable debug logging to console |
 
 ## Scene Lifecycle
 
@@ -317,11 +332,28 @@ return layout
 
 ### LoveScenes.init(config)
 
-Initialize the library with optional configuration.
+Initialize the library with optional configuration. **All parameters are optional** - the library works with sensible defaults.
 
 **Parameters:**
 
-- `config` (table, optional): Configuration options
+- `config` (table, optional): Configuration options. If omitted, uses default values.
+  - `scenesPath` (string, optional): Directory containing scenes (default: "scenes")
+  - `autoLoad` (boolean, optional): Automatically load scenes on init (default: true)  
+  - `enableLayouts` (boolean, optional): Enable layout system (default: true)
+  - `debugMode` (boolean, optional): Enable debug logging (default: false)
+
+**Examples:**
+
+```lua
+-- Minimal setup
+LoveScenes.init()
+
+-- With custom scenes directory
+LoveScenes.init({ scenesPath = "game-scenes" })
+
+-- With debug mode
+LoveScenes.init({ debugMode = true })
+```
 
 ### LoveScenes.navigate(path, params)
 

@@ -35,12 +35,17 @@ local currentLayout = nil
 
 --- Initialize the love-scenes library
 -- Sets up the routing system and loads scenes from the specified directory.
+-- All configuration parameters are optional - the library works with sensible defaults.
 --
--- @tparam ?LoveScenesConfig userConfig Configuration options
+-- @tparam ?LoveScenesConfig userConfig Configuration options (all optional)
 -- @treturn LoveScenes The initialized LoveScenes instance
 -- @usage
+-- -- Minimal setup
+-- LoveScenes.init()
+--
+-- -- With custom configuration
 -- LoveScenes.init({
---     scenesPath = "scenes",
+--     scenesPath = "game-scenes",
 --     debugMode = true
 -- })
 function LoveScenes.init(userConfig)
