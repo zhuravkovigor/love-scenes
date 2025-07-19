@@ -11,9 +11,10 @@
 
 ---@type LoveScenes
 local LoveScenes = {}
-local Router = require("router")
-local Scene = require("scene")
-local Layout = require("layout")
+
+local Router = require("libs.love-scenes.router")
+local Scene = require("libs.love-scenes.scene")
+local Layout = require("libs.love-scenes.layout")
 
 -- Default configuration
 ---@type LoveScenesConfig

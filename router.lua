@@ -10,7 +10,7 @@
 local Router = {}
 Router.__index = Router
 
-local utils = require("utils")
+local utils = require("libs.love-scenes.utils")
 
 --- Create a new router instance
 -- @tparam table config Configuration object with routing settings
