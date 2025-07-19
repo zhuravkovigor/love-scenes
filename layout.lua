@@ -33,9 +33,9 @@ function Layout.load(layoutPath)
 		self[k] = v
 	end
 
-	-- Initialize layout if init method exists
-	if self.init then
-		self:init()
+	-- Initialize layout if load method exists
+	if self.load then
+		self:load()
 	end
 
 	return self

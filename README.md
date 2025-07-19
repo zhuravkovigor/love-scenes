@@ -86,7 +86,7 @@ end
 -- scenes/index.lua (Main menu at route "/")
 local scene = {}
 
-function scene:init(params)
+function scene:load(params)
     self.title = "My Awesome Game"
 end
 
@@ -113,7 +113,7 @@ return scene
 -- scenes/game/index.lua (Game scene at route "/game")
 local scene = {}
 
-function scene:init(params)
+function scene:load(params)
     self.player = {x = 100, y = 100}
 end
 
@@ -175,7 +175,7 @@ scenes/
 -- scenes/level/[level].lua
 local scene = {}
 
-function scene:init(params)
+function scene:load(params)
     self.levelId = params.level  -- Access the dynamic parameter
     print("Loading level:", self.levelId)
 
@@ -268,9 +268,10 @@ Scenes have several lifecycle methods:
 ```lua
 local scene = {}
 
-function scene:init(params)
-    -- Called when scene is created
+function scene:load(params)
+    -- Called when scene is created and loaded
     -- Access route parameters via params
+    -- Initialize scene data, load assets, set up state
 end
 
 function scene:onEnter()
@@ -294,6 +295,10 @@ function scene:keypressed(key, scancode, isrepeat)
     -- Handle input
 end
 
+function scene:mousepressed(x, y, button, isTouch, presses)
+    -- Handle mouse input
+end
+
 return scene
 ```
 
@@ -304,7 +309,7 @@ Layouts also have lifecycle methods:
 ```lua
 local layout = {}
 
-function layout:init()
+function layout:load()
     -- Called when layout is created
 end
 
@@ -371,6 +376,218 @@ Get the current active scene instance.
 ### LoveScenes.getCurrentLayout()
 
 Get the current active layout instance.
+
+## Complete Examples
+
+### Basic Game Setup
+
+Here's a complete example of a simple game with multiple scenes:
+
+```lua
+-- main.lua
+local LoveScenes = require('love-scenes')
+
+function love.load()
+    LoveScenes.init({
+        debugMode = true  -- Enable debug logging
+    })
+
+    -- Start at main menu
+    LoveScenes.navigate('/')
+end
+
+function love.update(dt)
+    LoveScenes.update(dt)
+end
+
+function love.draw()
+    LoveScenes.draw()
+end
+
+-- Forward all LÖVE callbacks
+function love.keypressed(key, scancode, isrepeat)
+    LoveScenes.keypressed(key, scancode, isrepeat)
+end
+
+function love.mousepressed(x, y, button, isTouch, presses)
+    LoveScenes.mousepressed(x, y, button, isTouch, presses)
+end
+```
+
+```lua
+-- scenes/index.lua (Main Menu)
+local LoveScenes = require('love-scenes')
+local scene = {}
+
+function scene:load()
+    self.title = "My Awesome Game"
+    self.menuItems = {"Start Game", "Settings", "Quit"}
+    self.selectedIndex = 1
+end
+
+function scene:update(dt)
+    -- Menu logic here
+end
+
+function scene:draw()
+    -- Draw title
+    love.graphics.setFont(love.graphics.newFont(32))
+    love.graphics.printf(self.title, 0, 100, love.graphics.getWidth(), "center")
+
+    -- Draw menu items
+    love.graphics.setFont(love.graphics.newFont(16))
+    for i, item in ipairs(self.menuItems) do
+        local y = 200 + (i - 1) * 40
+        local color = i == self.selectedIndex and {1, 1, 0} or {1, 1, 1}
+        love.graphics.setColor(color)
+        love.graphics.printf(item, 0, y, love.graphics.getWidth(), "center")
+    end
+    love.graphics.setColor(1, 1, 1)  -- Reset color
+end
+
+function scene:keypressed(key)
+    if key == "up" then
+        self.selectedIndex = math.max(1, self.selectedIndex - 1)
+    elseif key == "down" then
+        self.selectedIndex = math.min(#self.menuItems, self.selectedIndex + 1)
+    elseif key == "return" then
+        if self.selectedIndex == 1 then
+            LoveScenes.navigate('/game')
+        elseif self.selectedIndex == 2 then
+            LoveScenes.navigate('/settings')
+        elseif self.selectedIndex == 3 then
+            love.event.quit()
+        end
+    end
+end
+
+return scene
+```
+
+```lua
+-- scenes/game/index.lua (Game Scene)
+local LoveScenes = require('love-scenes')
+local scene = {}
+
+function scene:load()
+    self.player = {
+        x = 400,
+        y = 300,
+        speed = 200
+    }
+    self.enemies = {}
+    self.score = 0
+end
+
+function scene:update(dt)
+    -- Player movement
+    if love.keyboard.isDown("left", "a") then
+        self.player.x = self.player.x - self.player.speed * dt
+    end
+    if love.keyboard.isDown("right", "d") then
+        self.player.x = self.player.x + self.player.speed * dt
+    end
+    if love.keyboard.isDown("up", "w") then
+        self.player.y = self.player.y - self.player.speed * dt
+    end
+    if love.keyboard.isDown("down", "s") then
+        self.player.y = self.player.y + self.player.speed * dt
+    end
+
+    -- Keep player on screen
+    self.player.x = math.max(20, math.min(love.graphics.getWidth() - 20, self.player.x))
+    self.player.y = math.max(20, math.min(love.graphics.getHeight() - 20, self.player.y))
+end
+
+function scene:draw()
+    -- Draw player
+    love.graphics.setColor(0, 1, 0)  -- Green
+    love.graphics.circle("fill", self.player.x, self.player.y, 20)
+
+    -- Draw UI
+    love.graphics.setColor(1, 1, 1)  -- White
+    love.graphics.print("Score: " .. self.score, 10, 10)
+    love.graphics.print("Press ESC to return to menu", 10, 30)
+end
+
+function scene:keypressed(key)
+    if key == "escape" then
+        LoveScenes.navigate('/')
+    end
+end
+
+return scene
+```
+
+### Dynamic Routes Example
+
+```lua
+-- scenes/profile/[id].lua (Dynamic User Profile)
+local scene = {}
+
+function scene:load(params)
+    self.userId = params.id
+    self.userInfo = self:loadUserInfo(self.userId)
+end
+
+function scene:loadUserInfo(id)
+    -- Simulate loading user data
+    return {
+        name = "User " .. id,
+        level = math.random(1, 100),
+        score = math.random(1000, 99999)
+    }
+end
+
+function scene:draw()
+    love.graphics.printf("User Profile", 0, 50, love.graphics.getWidth(), "center")
+    love.graphics.printf("ID: " .. self.userId, 0, 100, love.graphics.getWidth(), "center")
+    love.graphics.printf("Name: " .. self.userInfo.name, 0, 130, love.graphics.getWidth(), "center")
+    love.graphics.printf("Level: " .. self.userInfo.level, 0, 160, love.graphics.getWidth(), "center")
+    love.graphics.printf("Score: " .. self.userInfo.score, 0, 190, love.graphics.getWidth(), "center")
+
+    love.graphics.printf("Press ESC to go back", 0, 250, love.graphics.getWidth(), "center")
+end
+
+function scene:keypressed(key)
+    if key == "escape" then
+        require('love-scenes').navigate('/')
+    end
+end
+
+return scene
+```
+
+Now you can navigate to different user profiles:
+
+- `LoveScenes.navigate('/profile/123')`
+- `LoveScenes.navigate('/profile/player1')`
+- `LoveScenes.navigate('/profile/admin')`
+
+## Tips and Best Practices
+
+### 1. Scene Organization
+
+- Keep related scenes in subdirectories (e.g., `scenes/game/`, `scenes/menu/`)
+- Use descriptive names for dynamic routes: `[playerId].lua`, `[levelName].lua`
+
+### 2. State Management
+
+- Initialize all scene data in the `load()` method
+- Use `onEnter()` and `onLeave()` for cleanup and transitions
+- Store global state outside of individual scenes if needed
+
+### 3. Performance
+
+- Preload assets in `load()` method
+- Use `onLeave()` to clean up resources
+- Consider using layouts for shared UI elements
+
+### 4. Navigation
+
+- Use absolute paths for navigation: `/game`, `/settings/audio`
+- Pass additional data via the params parameter
+- Handle navigation errors gracefully
 
 ## Examples
 

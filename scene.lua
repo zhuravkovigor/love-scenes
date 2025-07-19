@@ -2,7 +2,7 @@
 -- Handles individual scene instances and their lifecycle.
 --
 -- Scenes are loaded from Lua files and can define various lifecycle methods
--- such as init, update, draw, and LÖVE 2D callbacks.
+-- such as load, update, draw, onEnter, onLeave, and LÖVE 2D callbacks.
 --
 -- @module love-scenes.scene
 -- @author Igor Zhuravkov
@@ -12,7 +12,7 @@ Scene.__index = Scene
 
 --- Create a new scene instance
 -- Loads a scene file and creates an instance with the provided parameters.
--- Automatically calls the scene's init method if it exists.
+-- Automatically calls the scene's load method if it exists.
 --
 -- @tparam table sceneData Scene data from router containing path and route info
 -- @tparam table params Route parameters to pass to the scene
@@ -40,9 +40,9 @@ function Scene.create(sceneData, params)
 		self[k] = v
 	end
 
-	-- Initialize scene data if init method exists
-	if self.init then
-		self:init(params)
+	-- Initialize scene data if load method exists
+	if self.load then
+		self:load(params)
 	end
 
 	return self
