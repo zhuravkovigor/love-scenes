@@ -112,25 +112,51 @@ function LoveScenes.navigate(path, params)
 		newLayout = Layout.load(layoutPath)
 	end
 
-	-- Call lifecycle hooks
+	local newScene = Scene.create(scene, routeParams or {})
+
+	-- Simple lifecycle calls with optional next parameter
+
+	-- Call onLeave on current scene/layout
 	if currentScene and currentScene.onLeave then
-		currentScene:onLeave()
+		if type(currentScene.onLeave) == "function" then
+			-- Try with next parameter, fallback to no parameter
+			local success = pcall(currentScene.onLeave, currentScene, function() end)
+			if not success then
+				currentScene:onLeave()
+			end
+		end
 	end
 
 	if currentLayout and currentLayout.onLeave then
-		currentLayout:onLeave()
+		if type(currentLayout.onLeave) == "function" then
+			local success = pcall(currentLayout.onLeave, currentLayout, function() end)
+			if not success then
+				currentLayout:onLeave()
+			end
+		end
 	end
 
-	-- Switch to new scene and layout
+	-- Set new scene/layout
 	currentLayout = newLayout
-	currentScene = Scene.create(scene, routeParams or {})
+	currentScene = newScene
 
+	-- Call onEnter on new scene/layout
 	if currentLayout and currentLayout.onEnter then
-		currentLayout:onEnter(currentScene)
+		if type(currentLayout.onEnter) == "function" then
+			local success = pcall(currentLayout.onEnter, currentLayout, currentScene, function() end)
+			if not success then
+				currentLayout:onEnter(currentScene)
+			end
+		end
 	end
 
-	if currentScene.onEnter then
-		currentScene:onEnter()
+	if currentScene and currentScene.onEnter then
+		if type(currentScene.onEnter) == "function" then
+			local success = pcall(currentScene.onEnter, currentScene, function() end)
+			if not success then
+				currentScene:onEnter()
+			end
+		end
 	end
 
 	if config.debugMode then

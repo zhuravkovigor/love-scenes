@@ -37,10 +37,12 @@ local Scene = {}
 function Scene:init(params) end
 
 ---Called when entering this scene
-function Scene:onEnter() end
+---@param next function? Optional callback to control transition timing
+function Scene:onEnter(next) end
 
 ---Called when leaving this scene
-function Scene:onLeave() end
+---@param next function? Optional callback to control transition timing
+function Scene:onLeave(next) end
 
 ---Called every frame
 ---@param dt number Delta time in seconds
@@ -110,10 +112,12 @@ function Layout:init() end
 
 ---Called when entering this layout with a scene
 ---@param scene Scene The scene using this layout
-function Layout:onEnter(scene) end
+---@param next function? Optional callback to control transition timing
+function Layout:onEnter(scene, next) end
 
 ---Called when leaving this layout
-function Layout:onLeave() end
+---@param next function? Optional callback to control transition timing
+function Layout:onLeave(next) end
 
 ---Called every frame before scene update
 ---@param dt number Delta time in seconds

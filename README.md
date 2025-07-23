@@ -274,12 +274,24 @@ function scene:load(params)
     -- Initialize scene data, load assets, set up state
 end
 
-function scene:onEnter()
+function scene:onEnter(next)
     -- Called when navigating to this scene
+    -- next is an optional callback for controlling transition timing
+    if next then
+        -- Perform any animations or async setup
+        -- Call next() when ready for the scene to become active
+        next()
+    end
 end
 
-function scene:onLeave()
+function scene:onLeave(next)
     -- Called when leaving this scene
+    -- next is an optional callback for controlling transition timing
+    if next then
+        -- Perform cleanup animations
+        -- Call next() when ready to complete the transition
+        next()
+    end
 end
 
 function scene:update(dt)
@@ -302,6 +314,43 @@ end
 return scene
 ```
 
+### Example with Transition Animation
+
+```lua
+local scene = {}
+local fade_alpha = 1
+
+function scene:onEnter(next)
+    if next then
+        -- Start fade-in animation
+        fade_alpha = 0
+        -- Don't block transition, let it proceed immediately
+        next()
+    else
+        fade_alpha = 1
+    end
+end
+
+function scene:update(dt)
+    -- Simple fade-in animation
+    if fade_alpha < 1 then
+        fade_alpha = math.min(1, fade_alpha + dt * 2)
+    end
+end
+
+function scene:draw()
+    love.graphics.push()
+    love.graphics.setColor(1, 1, 1, fade_alpha)
+
+    -- Draw scene content with fade effect
+    love.graphics.printf("Scene Content", 0, 100, love.graphics.getWidth(), "center")
+
+    love.graphics.pop()
+end
+
+return scene
+```
+
 ## Layout Lifecycle
 
 Layouts also have lifecycle methods:
@@ -313,11 +362,22 @@ function layout:load()
     -- Called when layout is created
 end
 
-function layout:onEnter(scene)
+function layout:onEnter(scene, next)
     -- Called when a scene using this layout is entered
+    -- scene: the scene that will be rendered
+    -- next: optional callback for controlling transition timing
+    if next then
+        next()
+    end
 end
 
-function layout:onLeave()
+function layout:onLeave(next)
+    -- Called when leaving this layout
+    -- next: optional callback for controlling transition timing
+    if next then
+        next()
+    end
+end
     -- Called when leaving this layout
 end
 
